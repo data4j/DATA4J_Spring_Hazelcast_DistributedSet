@@ -1,0 +1,29 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:hz="http://www.hazelcast.com/schema/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<import resource="classpath:applicationContext-hazelcast.xml" />
+	
+	<!-- Beans Declaration -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="locations">
+	        <list>
+	            <value>classpath:/hazelcast-config.properties</value>
+	        </list>
+	    </property>
+	</bean>	
+	
+	<bean id="distributedSetService" class="org.data4j.cache.srv.DistributedSetService">
+    	<constructor-arg ref="customerSet"/>
+    </bean>
+    
+    <bean id="distributedSetLoader" class="org.data4j.operator.DistributedSetLoader">
+   		<property name="distributedSetService" ref="distributedSetService" />
+    </bean>
+    
+    <bean id="distributedSetDemonstrator" class="org.data4j.operator.DistributedSetDemonstrator">
+   		<property name="distributedSetService" ref="distributedSetService" />
+    </bean>
+</beans>
